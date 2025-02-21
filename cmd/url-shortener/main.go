@@ -16,10 +16,11 @@ const (
 func main() {
 	cfg := config.MustLoad()
 
-	fmt.Println(cfg)
+	log := setupLogger(cfg.Env)
 
-	// TODO: init config: cleanenv
-	// TODO: init logger: slog
+	log.Info("Starting the application...", slog.String("env", cfg.Env))
+	log.Debug(fmt.Sprintf("Loaded config: %+v", cfg))
+
 	// TODO: init storage: dql
 	// TODO: init router: chi
 	// TODO: run server
