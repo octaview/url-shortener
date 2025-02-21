@@ -5,6 +5,8 @@ import (
 	"log/slog"
 	"os"
 	"url-shortener/internal/config"
+	"url-shortener/internal/storage"
+	"url-shortener/internal/storage/sqlite"
 )
 
 const (
@@ -21,7 +23,13 @@ func main() {
 	log.Info("Starting the application...", slog.String("env", cfg.Env))
 	log.Debug(fmt.Sprintf("Loaded config: %+v", cfg))
 
-	// TODO: init storage: dql
+	storage, err := sqlite.New(cfg.StoragePath)
+	if err != nil {
+		log.Error("Failed to initialize storage")
+		os.Exit(1)
+	}
+
+
 	// TODO: init router: chi
 	// TODO: run server
 }
