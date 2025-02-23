@@ -1,5 +1,5 @@
 env: "local"
-storage_path: "/tmp/url-shortener"
+storage_path: "/home/octaview/url-shortener/url-shortener/storage/storage.db"
 http_server:
   address: "localhost:8082"
   timeout: 5s

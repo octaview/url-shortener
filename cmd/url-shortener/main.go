@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"os"
 	"url-shortener/internal/config"
-	"url-shortener/internal/storage"
+	"url-shortener/internal/lib/logger/sl"
 	"url-shortener/internal/storage/sqlite"
 )
 
@@ -25,16 +25,24 @@ func main() {
 
 	storage, err := sqlite.New(cfg.StoragePath)
 	if err != nil {
-		log.Error("Failed to initialize storage")
+		log.Error("Failed to initialize storage", sl.Err(err))
 		os.Exit(1)
 	}
 
+	id, err := storage.SaveURL("https://google.com", "google")
+	if err != nil {
+		log.Error("Failed to save URL", sl.Err(err))
+		os.Exit(1)
+	}
+
+	log.Info("URL saved", slog.Int64("id", id))
+	_ = storage
 
 	// TODO: init router: chi
 	// TODO: run server
 }
 
-func setupLogger(env string) *slog.Logger{
+func setupLogger(env string) *slog.Logger {
 	var log *slog.Logger
 
 	switch env {
